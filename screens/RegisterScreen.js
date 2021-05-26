@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { KeyboardAvoidingView } from 'react-native'
 import {Button, Input, Image, Text} from 'react-native-elements';
+import {auth } from '../firabase'
 
 const RegisterScreen = ({navigation}) => {
 
@@ -15,11 +16,17 @@ const RegisterScreen = ({navigation}) => {
         navigation.setOptions({
             headerBackTitle: "Back to Login",
         })
-        console.log('---',navigation )
     },[navigation])
 
     const register = () => {
-
+        auth.createWithEmailAndPassword(email, password)
+        .then((authUser)=>{
+            authUser.user.update({
+                displayName: name, 
+                photoURL: imageUrl,  
+            })
+        })
+        .catch((error)=> alert(error.message))
     }
 
     
